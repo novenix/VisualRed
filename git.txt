@@ -1,0 +1,6 @@
+clonar: git clone (direccion ssh)
+nuevo: git remotte add origin (lalve ssh)
+existente: git remote set-url origin (ssh)
+git add .
+git commit -m "blabla"
+git push
