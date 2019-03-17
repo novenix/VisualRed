@@ -37,6 +37,7 @@ class Home extends React.Component{
                         getAddressPredictions={this.props.getAddressPredictions}
                         resultTypes={this.props.resultTypes}
                         predictions={this.props.predictions}
+                        // asd
                     />
                 }
                 
