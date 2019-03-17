@@ -6,18 +6,7 @@ import MapContainer from './MapContainer/index'
 
 
 class Home extends React.Component{
-    getLocation(){
-        state={
-            region={
-                latitude:4.710989,
-                longitude:-74.072090,
-                latitudeDelta:0.0922,
-                longitudeDelta:0.0421,
-            }
-
-        }
-        this.props.getCurrentLocation()
-    }
+    
     componentDidMount(){
         this.props.getCurrentLocation();
     }
@@ -36,11 +25,20 @@ class Home extends React.Component{
         return(
             <Container  >
                 {console.log(this.props)}
-                {this.props.region.latitude?<MapContainer region={this.props.region} />:<MapContainer region={region}/>
-                }   
-                {/* {this.props.region.latitude&&
-                    <MapContainer region={this.props.region} />
-                } */}
+                {console.log(this.props.region)}
+                {console.log("xcc")}
+                {/* {this.props.region.latitude?<MapContainer region={this.props.region} />:<MapContainer region={region}/>
+                }    */}
+                {this.props.region.latitude&&
+                    <MapContainer 
+                        region={this.props.region} 
+                        getInputData={this.props.getInputData}
+                        toggleSearchResultModal={this.props.toggleSearchResultModal}
+                        getAddressPredictions={this.props.getAddressPredictions}
+                        resultTypes={this.props.resultTypes}
+                        predictions={this.props.predictions}
+                    />
+                }
                 
 
             </Container>
