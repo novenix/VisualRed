@@ -2,7 +2,8 @@ import React from 'react';
 import {View,Text} from 'react-native'
 import {Container} from 'native-base'
 import MapContainer from './MapContainer/index'
-
+import HeaderComponent from '../../../components/HeaderComponent/index'
+import TabBar from '../../../components/TabComponent/index'
 
 
 class Home extends React.Component{
@@ -29,6 +30,8 @@ class Home extends React.Component{
                 {console.log("xcc")}
                 {/* {this.props.region.latitude?<MapContainer region={this.props.region} />:<MapContainer region={region}/>
                 }    */}
+                <HeaderComponent />
+                <TabBar/>
                 {this.props.region.latitude&&
                     <MapContainer 
                         region={this.props.region} 
