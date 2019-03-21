@@ -3,8 +3,8 @@ import update from 'react-addons-update';
 import constants from './actionConstants';
 import {Dimensions,Alert} from 'react-native'
 // llave google
-import key from '../../../../key'
-import axios from 'axios';
+// import key from '../../../../key'
+// import axios from 'axios';
 // fetch con timeout
 // import 'whatwg-fetch-timeout'
 import RNGooglePlaces from 'react-native-google-places'
@@ -34,8 +34,10 @@ const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA
 // ------------------------
 
 export function getCurrentLocation(){
+	console.log('getCurrent location')
     return (dispatch)=>{
         navigator.geolocation.getCurrentPosition(
+			
             (position)=>{
                 // redux
                 console.log(position.coords.latitude,"asdasd")
@@ -45,7 +47,8 @@ export function getCurrentLocation(){
                 });
             },
             (error)=>console.log(error.message),
-            {enableHighAccuracy: true, timeout: 20000, maximumAge:1000}
+			// {enableHighAccuracy: true, timeout: 20000, maximumAge:1000}
+			{enableHighAccuracy: true, timeout: 20000}
         )
     }
 }
@@ -72,7 +75,7 @@ export function getAddressPredictions(){
 		let userInput = store().home.resultTypes.pickUp ? store().home.inputData.pickUp : store().home.inputData.dropOff;
 		RNGooglePlaces.getAutocompletePredictions(userInput,
 			{
-				country:"MY"
+				country:"CO"
 			}
 		)
 		.then((results)=>
