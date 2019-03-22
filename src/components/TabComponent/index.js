@@ -4,6 +4,7 @@ import {Text} from 'react-native'
 import { Header,Left,Body,Right,Button, Tabs,Tab } from 'native-base'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+
 import styles from './TabsStyles'
 export const TabBar=()=>{
     return(

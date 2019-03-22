@@ -12,7 +12,9 @@ const MapContainer=({
     toggleSearchResultModal,
     getAddressPredictions,
     resultTypes,
-    predictions
+    predictions,
+    getSelectedAddress,
+    selectedAddress
 })=>{
 
 
@@ -33,12 +35,13 @@ const MapContainer=({
                 getInputData={getInputData} 
                 toggleSearchResultModal={toggleSearchResultModal}
                 getAddressPredictions={getAddressPredictions} 
+                selectedAddress={selectedAddress}
             />
             {/* <SearchResults/> */}
             
             {
                 (resultTypes.pickUp || resultTypes.dropOff) &&
-                <SearchResults predictions={predictions} />
+                <SearchResults predictions={predictions} getSelectedAddress={getSelectedAddress}/>
                 
             }
             
