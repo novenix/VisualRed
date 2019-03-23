@@ -5,7 +5,7 @@ import MapContainer from './MapContainer/index'
 import HeaderComponent from '../../../components/HeaderComponent/index'
 import TabBar from '../../../components/TabComponent/index'
 import Fare from './Fare/index'
-
+import Fab from './Fab/index'
 class Home extends React.Component{
     
     componentDidMount(){
@@ -45,6 +45,9 @@ class Home extends React.Component{
                         // asd
                     />
                 }
+                
+                    <Fab onPressAction={()=>this.props.bookAssistant()} />
+                
                 {
                     this.props.fare&&
                     <Fare fare={this.props.fare} />

@@ -12,6 +12,7 @@ import RNGooglePlaces from 'react-native-google-places'
 import keys from '../../../../key'
 import request from '../../../util/request'
 import calculateFare from '../../../util/calculateFare'
+const axios = require('axios');
 // ------------------------
 // constants
 // ------------------------
@@ -24,7 +25,8 @@ const
 		GET_ADDRESS_PREDICTIONS,
 		GET_SELECTED_ADDRESS,
 		GET_DISTANCE_MATRIX,
-		GET_FARE
+		GET_FARE,
+		BOOK_ASSISTANT
 
 	}=constants;
 
@@ -154,7 +156,58 @@ export function getSelectedAddress(payload){
 		.catch((error)=>console.log(error.message))
 	}
 }
+//BOOK_ASSISTANT
+export function bookAssistant(){
 	
+	return ((dispatch,store)=>{
+		console.log(store().home.selectedAddress.selectedPickUp.address,"selected Address")
+		console.log(store().home.selectedAddress,"selected Address 2")
+		const payload={
+			data:{
+				userName:"Mariana",
+				pickUp:{
+					address:store().home.selectedAddress.selectedPickUp.address,
+					name:store().home.selectedAddress.selectedPickUp.name,
+					latitude:store().home.selectedAddress.selectedPickUp.location.latitude,
+					longitude:store().home.selectedAddress.selectedPickUp.location.longitde
+				},
+				dropOff:{
+					address:store().home.selectedAddress.selectedDropOff.address,
+					name:store().home.selectedAddress.selectedDropOff.name,
+					latitude:store().home.selectedAddress.selectedDropOff.location.latitude,
+					longitude:store().home.selectedAddress.selectedDropOff.location.longitde
+				},
+				fare:store().home.fare,
+				status:"pending"
+				
+
+			}
+		};
+		console.log(payload.data,"data a enviar")
+		axios.post("http://192.168.1.51:3001/api/v1/bookings",payload.data)
+		.then(function(response){
+			console.log(response,"response axios")
+			dispatch({
+				type:BOOK_ASSISTANT,
+				payload:response.body
+			})
+		})
+		.catch(function(error){
+			console.log(error)
+		})
+		// "http://192.168.1.51:3001/api/v1/bookings"
+		// "http://localhost:3001/api/v1/bookings"
+		// request.post("http://192.168.1.51:3001/api/v1/bookings")
+		// .send(payload.data)
+		// .finish((error,res)=>{
+		// 	dispatch({
+		// 		type:BOOK_ASSISTANT,
+		// 		payload:res.body
+		// 	})
+		// })
+	})
+}
+
 
 // ------------------------
 // Action Handlers
@@ -265,6 +318,13 @@ function handleGetFare(state,action){
 		}
 	})
 }
+function handleBookAssistant(state,action){
+	return update(state,{
+		booking:{
+			$set:action.payload
+		}
+	})
+}
 
 
 const ACTION_HANDLERS={
@@ -274,7 +334,8 @@ const ACTION_HANDLERS={
 	GET_ADDRESS_PREDICTIONS:handleGetAddressPredictions,
 	GET_SELECTED_ADDRESS:handleGetSelectedAddress,
 	GET_DISTANCE_MATRIX:handleGetDistanceMatrix,
-	GET_FARE:handleGetFare
+	GET_FARE:handleGetFare,
+	BOOK_ASSISTANT:handleBookAssistant
 }
 
 const initialState={
