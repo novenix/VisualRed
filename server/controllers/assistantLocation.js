@@ -25,8 +25,48 @@ const getAssistantLoc=(req,res)=>{
       return res.json(createdAssistant);
     })
   }
+ const updateAssistantSocket=(req,res)=>{
+   const socketId=req.params.id
+  //  console.log(socketId)
+   const update=req.body
+  //  console.log(update)
+   AssistantLoc.findOneAndUpdate(socketId,update,(err,socketUpdated)=>{
+     if(err){
+       res.status(500).send({message:'error al actualizar socket'})
+     }
+     else{
+       res.status(200).send({assistantLocation:socketUpdated})
+     }
+   })
+ }
+const getNearbyDriver=(req,res,next)=>{
+  console.log('quien llama?')
+  AssistantLoc.createIndex({"coordinate":"2dsphere"})
+  AssistantLoc.find({
+    "coordinate":{
+      "$near":{
+        "$geometry":{
+          "type":"point",
+          "coordinates":[parseFloat(req.query.longitude),parseFloat(req.query.latitude)],
+        },
+        // $maxDistance:100000
+      }
+    },
+  },(err,location)=>{
+    if (err){res.status(500).send({message:'error al devolver ubicacion de asistente'})}
+    else{
+        if (!location){
+            res.status(404).send({message:'no hay asistentes'})
+        }
+        else{console.log(location,"locatiooonn______"); res.status(200).send({location})}
+    }
+}
+  )
+}
 
   module.exports={
     getAssistantLoc,   
-      saveAssistantloc
+      saveAssistantloc,
+      updateAssistantSocket,
+      getNearbyDriver
   }

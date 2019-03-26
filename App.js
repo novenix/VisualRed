@@ -10,7 +10,8 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import Root from './src/main';
-
+import{Container} from 'native-base'
+// import TabBar from './src/components/TabComponent'
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
   android:
@@ -23,8 +24,12 @@ export default class App extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
+        {/* <Container> */}
       {/* <View > */}
         <Root {...this.props} />
+        {/* <Text>holo first</Text> */}
+        {/* <TabBar {...this.props} /> */}
+        {/* </Container> */}
       </View>
     );
   }
@@ -33,6 +38,10 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // opacity:0.6,
+    // width:0,
+    // height:0
+
     
   },
 

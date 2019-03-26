@@ -1,13 +1,18 @@
 // schemas para ingresar a la base de datos de un portafolio
 const mongoose=require('mongoose');
 const Schema=mongoose.Schema;
-
+const coordinateSchema=new Schema({
+    type:String,
+    coordinates:[Number]
+})
 const assistantLocSchema=new Schema({
     assistantId:String,
-    coordinate:{
-        type:String,
-        coordinates:[Number]
-    },
+    coordinate:
+        coordinateSchema
+        // type:String,
+        // coordinates:{type:[Number]}
+    // }
+    ,
    socketId:String
 });
 // {

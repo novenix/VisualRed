@@ -3,13 +3,14 @@ const express = require('express')
 
 // mongoose
 const mongoose=require("mongoose")
+const path=require('path')
 const bodyParser=require('body-parser');
+const socket_io=require('socket.io')
+const io=socket_io();
+// index.html
+const index=require('./routes/index')
+// // model de booking
 
-// // model de book
-// const Booking=require('./models/booking')
-// const Book=require('./models/book');
-
-// const Port=require('./models/portfolio')
 const BookingRoutes=require('./routes/booking')
 const AssistatnRoutes=require('./routes/assistant')
 const AssistantLocRoutes=require('./routes/assistantLocation')
@@ -20,46 +21,34 @@ const AssistantLocRoutes=require('./routes/assistantLocation')
 // la nueva
 // mongodb+srv://Nicolas:<password>@cluster0-ikjs8.mongodb.net/test?retryWrites=true
 
- 
+mongoose.set('useFindAndModify', false);
  mongoose.connect('mongodb+srv://Nicolas:Clave123@cluster0-ikjs8.mongodb.net/test?retryWrites=true',{useNewUrlParser:true})
 .then(()=>{console.log('Base de Datos conectada')})
 .catch(err=>console.log(err))
 const server = express();
 server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({extended:true}))
 
   // midlleware body-parser;
   
-  var port= process.env.PORT || 3001
-  server.listen(port,function(){
-  console.log(`API REST FAV funcionando en localhost:${port} `)
-    
-})
+var port= process.env.PORT || 3001
+console.log(port)
+  // io.listen
+
+server.set("views",path.join(__dirname,"views"))
+// server.set("views",path.dirname('/views'))
+server.set("view enginge","ejs")
+server.engine("html",require("ejs").renderFile)
 //   // uso de la ruta de books sin validacion
-// server.use('/api/bookings',bookingRoutes)
+server.use('/',index)
 server.use('/api/V1/bookings',BookingRoutes)
 server.use('/api/v1/assistants',AssistatnRoutes)
 server.use('/api/v1/assistantsLoc',AssistantLocRoutes)
-// server.post('/api/V1/bookings',(req,res)=>{
-//   const bookingData=req.body;
-//   const booking= new Booking(bookingData)
-//   booking.save((err,createdBooking)=>{
-//     if (err){
-//       return res.status(422).send(err)
 
-//     }
-//     console.log(createdBooking)
-//     return res.json(createdBooking)
-//   })
-// })
-
-// server.get('/api/v1/bookings',(req,res)=>{
-//   // console.log(Book)
-//   Booking.find({},(err,allBookings)=>{
-//     if(err){
-//       console.log(err)
-//       return res.status(422).send(err)
-//     }
-//     console.log(allBookings)
-//     return res.json(allBookings)
-//   })
-// })
+io.listen(server.listen(port,()=>{
+  console.log(`API REST FAV funcionando en localhost:${port} `)    
+  }))
+  
+  server.io = io.on("connection", (socket)=>{
+    console.log("Socket connected: " + socket.id);
+  });

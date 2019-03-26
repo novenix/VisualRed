@@ -26,7 +26,8 @@ const
 		GET_SELECTED_ADDRESS,
 		GET_DISTANCE_MATRIX,
 		GET_FARE,
-		BOOK_ASSISTANT
+		BOOK_ASSISTANT,
+		GET_NEARBY_ASSISTANTS
 
 	}=constants;
 
@@ -119,6 +120,7 @@ export function getSelectedAddress(payload){
 			console.log(store().home.selectedAddress.selectedPickUp.location ,store().home.selectedAddress.selectedDropOff.location)
 			
 			if(store().home.selectedAddress.selectedPickUp && store().home.selectedAddress.selectedDropOff){
+				console.log("matrix")
 				request.get("https://maps.googleapis.com/maps/api/distancematrix/json")
 				.query({
 					origins:store().home.selectedAddress.selectedPickUp.location.latitude + "," + store().home.selectedAddress.selectedPickUp.location.longitude,
@@ -160,6 +162,12 @@ export function getSelectedAddress(payload){
 export function bookAssistant(){
 	
 	return ((dispatch,store)=>{
+		const nearbyAssistants=store().home.nearbyAssistants;
+		console.log(nearbyAssistants,"asistentes")
+		console.log(Math.floor(Math.random()*nearbyAssistants.length))
+		// const nearbyAssistant=nearbyAssistants[Math.floor(Math.random()*nearbyAssistants.length)]
+		const nearbyAssistant=nearbyAssistants[0]
+		console.log(nearbyAssistant,"1 asistente")
 		console.log(store().home.selectedAddress.selectedPickUp.address,"selected Address")
 		console.log(store().home.selectedAddress,"selected Address 2")
 		const payload={
@@ -181,10 +189,16 @@ export function bookAssistant(){
 				status:"pending"
 				
 
+			},
+			nearbyAssistant:{
+				socketId:nearbyAssistant.socketId,
+				assistantId:nearbyAssistant.assistantId,
+				latitude:nearbyAssistant.coordinate.coordinates[0],
+				longitude:nearbyAssistant.coordinate.coordinates[1]
 			}
 		};
-		console.log(payload.data,"data a enviar")
-		axios.post("http://192.168.1.51:3001/api/v1/bookings",payload.data)
+		console.log(payload,"data a enviar")
+		axios.post("http://192.168.1.51:3001/api/v1/bookings",payload)
 		.then(function(response){
 			console.log(response,"response axios")
 			dispatch({
@@ -207,7 +221,33 @@ export function bookAssistant(){
 		// })
 	})
 }
-
+// get nearby assistants
+export function getNearbyAssistants(){
+	console.log("accion nearby assistants")
+	return((dispatch, store)=>{
+		console.log("latitude",store().home.region.latitude,)
+		axios.get("http://192.168.1.51:3001/api/v1/assistantsLoc",{
+			
+			params:{
+				latitude:store().home.region.latitude,
+				latitude:store().home.region.longitude
+			}
+		})
+		.then((results)=>{
+			console.log(results,"results")
+			console.log(results.data,"data xd")
+			dispatch({
+				type:GET_NEARBY_ASSISTANTS,
+				payload:results.data
+			})
+			}
+		)
+		.catch((error)=> console.log(error.message));
+	}
+	)
+	
+}
+console.log()
 
 // ------------------------
 // Action Handlers
@@ -326,6 +366,13 @@ function handleBookAssistant(state,action){
 	})
 }
 
+function handleGetNearbyAssistants(state,action){
+	return update(state,{
+		nearbyAssistants:{
+			$set:action.payload
+		}
+	})
+}
 
 const ACTION_HANDLERS={
 	GET_CURRENT_LOCATION:handleGetCurrentLocation,
@@ -335,7 +382,8 @@ const ACTION_HANDLERS={
 	GET_SELECTED_ADDRESS:handleGetSelectedAddress,
 	GET_DISTANCE_MATRIX:handleGetDistanceMatrix,
 	GET_FARE:handleGetFare,
-	BOOK_ASSISTANT:handleBookAssistant
+	BOOK_ASSISTANT:handleBookAssistant,
+	GET_NEARBY_ASSISTANTS:handleGetNearbyAssistants
 }
 
 const initialState={

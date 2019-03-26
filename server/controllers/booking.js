@@ -13,8 +13,14 @@ const getbokings=(req,res)=>{
     
   }
   const saveBook=(req,res)=>{
-    const bookData=req.body;
-    console.log(bookData,"lo que llega alserver")
+    const bookData=req.body.data;
+    // console.log(bookData)
+    const nearbyAssistant=req.body.nearbyAssistant
+    // console.log(nearbyAssistant)
+    
+    // console.log(req.app.io,"io-------------")
+    const io = req.app.io;
+    // console.log(bookData,"lo que llega alserver")
     const booking=new Bookings(bookData);
 
     booking.save((err,createdBook)=>{
@@ -22,39 +28,24 @@ const getbokings=(req,res)=>{
         return res.status(422).send(err);
 
       }
+      if(nearbyAssistant.socketId){
+        console.log("createdbook if soket id")
+        // console.log(createdBook,"createdbook")
+        // res.json(createdBook);
+        console.log("pasa")
+        io.emit(nearbyAssistant.socketId+"assistantRequest",createdBook)
+      }
+      else{
+        console.log('assistant no conectado')
+      }
+      console.log('retorna')
       return res.json(createdBook);
     })
   }
-//   const updateBook=(req,res)=>{
-//     console.log('entra')
-//     const bookId=req.params.id;
-//     const bookData=req.body;
-//     Book.findById(bookId,(err,foundBook)=>{
-//       if (err){
-//         return res.status(422).send(err);
-//       }
-//       foundBook.set(bookData);
-//       foundBook.save((err,savedBook)=>{
-//         if (err){
-//           return res.status(422).send(err);
-//         }
-//         return res.json(foundBook);
-//       })
-//     });
-//   }
-//   const deleteBook=(req,res)=>{
-//     const bookId=req.params.id;
-//     Book.deleteOne({_id:bookId},(err,deletedBook)=>{
-//       if (err){
-//         return res.status(422).send(err);
-//       }
-//       return res.json({status:'DELETED'});
-//     })
-//   }
+
 
   module.exports={
     getbokings,
-    //   deleteBook,
-    //   updateBook,
-      saveBook
+    saveBook
+      
   }

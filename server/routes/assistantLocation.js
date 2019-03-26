@@ -5,5 +5,7 @@ const assistantLocController=require('../controllers/assistantLocation')
 router.post('',assistantLocController.saveAssistantloc)
   //endopoint 
   router.get('',assistantLocController.getAssistantLoc)
-
+  
+  router.put('/socket/:id',assistantLocController.updateAssistantSocket)
+  router.get('/socket',assistantLocController.getNearbyDriver)
 module.exports=router;

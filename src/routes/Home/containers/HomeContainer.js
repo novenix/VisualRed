@@ -6,7 +6,8 @@ import {
     toggleSearchResultModal,
     getAddressPredictions,
     getSelectedAddress,
-    bookAssistant
+    bookAssistant,
+    getNearbyAssistants
 } from '../modules/home';
 
 // function xd(map){
@@ -25,7 +26,8 @@ const mapStateToProps=(state)=>(
     predictions:state.home.predictions || [],
     selectedAddress:state.home.selectedAddress || {},
     fare:state.home.fare,
-    booking:state.home.booking || {}
+    booking:state.home.booking || {},
+    nearbyAssistants:state.home.nearbyAssistants || []
 
 
 });
@@ -37,7 +39,8 @@ const mapActionCreators={
     toggleSearchResultModal,
     getAddressPredictions,
     getSelectedAddress,
-    bookAssistant
+    bookAssistant,
+    getNearbyAssistants
     
 };
 
