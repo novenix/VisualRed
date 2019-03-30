@@ -57,7 +57,7 @@ server.use('/api/v1/assistantsLoc',AssistantLocRoutes)
 //   next()
 
 // })3.
-asd
+
 io.listen(server.listen(port,()=>{
   console.log(`API REST FAV funcionando en localhost:${port} `)    
   }))

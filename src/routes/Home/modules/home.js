@@ -9,7 +9,7 @@ import {Dimensions,Alert} from 'react-native'
 // import 'whatwg-fetch-timeout'
 import RNGooglePlaces from 'react-native-google-places'
 // import { request } from 'https';
-import keys from '../../../../key'
+// import keys from '../../../../key'
 import request from '../../../util/request'
 import calculateFare from '../../../util/calculateFare'
 const axios = require('axios');
@@ -101,7 +101,7 @@ export function getAddressPredictions(){
 }
 //obtener direccion
 export function getSelectedAddress(payload){
-	console.log(keys,"keyyyy")
+	// console.log(keys,"keyyyy")
 	const numbers={
 		baseFare:0.2,
 		timeRate:0.14,
@@ -200,9 +200,9 @@ export function bookAssistant(){
 		};
 		console.log(payload,"data a enviar")
 		// desarrollo en local
-		axios.post("http://192.168.1.51:3001/api/v1/bookings",payload)
+		// axios.post("http://192.168.1.51:3001/api/v1/bookings",payload)
 		// server
-		// axios.post("https://stark-hamlet-64562.herokuapp.com/api/v1/bookings",payload)
+		axios.post("https://stark-hamlet-64562.herokuapp.com/api/v1/bookings",payload)
 		.then(function(response){
 			console.log(response,"response axios")
 			dispatch({
@@ -233,9 +233,9 @@ export function getNearbyAssistants(){
 		console.log("latitude",store().home.region.latitude,)
 		console.log("long",store().home.region.longitude)
 		
-		axios.get("http://192.168.1.51:3001/api/v1/assistantsLoc",{
+		// axios.get("http://192.168.1.51:3001/api/v1/assistantsLoc",{
 		// axios.get("http://localhost:3001/api/v1/assistantsLoc"
-		// axios.get("https://stark-hamlet-64562.herokuapp.com/api/v1/assistantsLoc",{
+		axios.get("https://stark-hamlet-64562.herokuapp.com/api/v1/assistantsLoc",{
 			headers:{
 				'Access-Control-Allow-Origin': '*',
 				// 'Access-Control-Allow-Methods': 'POST, GET, PUT, OPTIONS, DELETE',
