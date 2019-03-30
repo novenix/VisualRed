@@ -1,9 +1,10 @@
 const AssistantLoc=require('../models/assistantLocation')
 const getAssistantLoc=(req,res)=>{
-      
+    console.log("getAssistantLocation")
     AssistantLoc.find({},(err,allBooks)=>{
-        console.log("entra")
+        console.log("entra assist loc")
       if (err){
+        console.log('entra error')
         return res.status(422).send(err);
       }
       return res.json(allBooks);
@@ -40,7 +41,7 @@ const getAssistantLoc=(req,res)=>{
    })
  }
 const getNearbyDriver=(req,res,next)=>{
-  console.log('quien llama?')
+  console.log('get nearby driver')
   AssistantLoc.createIndex({"coordinate":"2dsphere"})
   AssistantLoc.find({
     "coordinate":{

@@ -44,7 +44,20 @@ server.use('/',index)
 server.use('/api/V1/bookings',BookingRoutes)
 server.use('/api/v1/assistants',AssistatnRoutes)
 server.use('/api/v1/assistantsLoc',AssistantLocRoutes)
+// server.use((req,res,next)=>{
+//   //configurar los headers,* significa que cualquier url puede hacer peticiones
+//   res.header('Access Control Allow-Origin','*')
+//   //headers a llegar
+//   res.header('Access Control Allow-Headers','X-API-KEY,Origin,X-Requestes-With,Content-Type,Accept,Acces-Control-Request-Method')
+//   //metodos http que pueden legar
+//   res.header('Access Control Allow-Methods','GET,POST,OPTIONS,PUT,DELETE')
+//   //
+//   res.header(' Allow','GET,POST,OPTIONS,PUT,DELETE')
+//   //lanzar funcion next para que salga de la funcion
+//   next()
 
+// })3.
+asd
 io.listen(server.listen(port,()=>{
   console.log(`API REST FAV funcionando en localhost:${port} `)    
   }))

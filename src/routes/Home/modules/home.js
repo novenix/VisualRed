@@ -13,6 +13,7 @@ import keys from '../../../../key'
 import request from '../../../util/request'
 import calculateFare from '../../../util/calculateFare'
 const axios = require('axios');
+
 // ------------------------
 // constants
 // ------------------------
@@ -164,7 +165,7 @@ export function bookAssistant(){
 	return ((dispatch,store)=>{
 		const nearbyAssistants=store().home.nearbyAssistants;
 		console.log(nearbyAssistants,"asistentes")
-		console.log(Math.floor(Math.random()*nearbyAssistants.length))
+		console.log(nearbyAssistants[Math.floor(Math.random()*nearbyAssistants.length)])
 		// const nearbyAssistant=nearbyAssistants[Math.floor(Math.random()*nearbyAssistants.length)]
 		const nearbyAssistant=nearbyAssistants[0]
 		console.log(nearbyAssistant,"1 asistente")
@@ -198,7 +199,10 @@ export function bookAssistant(){
 			}
 		};
 		console.log(payload,"data a enviar")
+		// desarrollo en local
 		axios.post("http://192.168.1.51:3001/api/v1/bookings",payload)
+		// server
+		// axios.post("https://stark-hamlet-64562.herokuapp.com/api/v1/bookings",payload)
 		.then(function(response){
 			console.log(response,"response axios")
 			dispatch({
@@ -209,6 +213,7 @@ export function bookAssistant(){
 		.catch(function(error){
 			console.log(error)
 		})
+		// https://stark-hamlet-64562.herokuapp.com
 		// "http://192.168.1.51:3001/api/v1/bookings"
 		// "http://localhost:3001/api/v1/bookings"
 		// request.post("http://192.168.1.51:3001/api/v1/bookings")
@@ -226,13 +231,25 @@ export function getNearbyAssistants(){
 	console.log("accion nearby assistants")
 	return((dispatch, store)=>{
 		console.log("latitude",store().home.region.latitude,)
+		console.log("long",store().home.region.longitude)
+		
 		axios.get("http://192.168.1.51:3001/api/v1/assistantsLoc",{
-			
+		// axios.get("http://localhost:3001/api/v1/assistantsLoc"
+		// axios.get("https://stark-hamlet-64562.herokuapp.com/api/v1/assistantsLoc",{
+			headers:{
+				'Access-Control-Allow-Origin': '*',
+				// 'Access-Control-Allow-Methods': 'POST, GET, PUT, OPTIONS, DELETE',
+				// 'Access-Control-Allow-Headers': 'Access-Control-Allow-Methods, Access-Control-Allow-Origin, Origin, Accept, Content-Type',
+				// 'Accept': 'application/x-www-form-urlencoded',
+				// 'Content-Type':'application/x-www-form-urlencoded'
+			   },
 			params:{
 				latitude:store().home.region.latitude,
-				latitude:store().home.region.longitude
+				longitude:store().home.region.longitude
 			}
+		
 		})
+		// )
 		.then((results)=>{
 			console.log(results,"results")
 			console.log(results.data,"data xd")
@@ -242,7 +259,8 @@ export function getNearbyAssistants(){
 			})
 			}
 		)
-		.catch((error)=> console.log(error.message));
+		.catch((error)=> console.log(error));
+		// .catch((error)=> console.log(error.message));
 	}
 	)
 	
